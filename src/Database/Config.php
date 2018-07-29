@@ -22,7 +22,7 @@ class Config
         try {
             self::$connection = new Connection($settings['dsn'], $settings['user'], $settings['password'], (isset($settings['options']) ? $settings['options'] : []));
             self::$connection->connect();
-        } catch (ConnectionException $e) {
+        } catch (\Exception $e) {
             throw new ConfigException($e->getMessage());
         }
     }

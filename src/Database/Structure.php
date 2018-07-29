@@ -19,9 +19,13 @@ class Structure
      * @throws StructureException
      */
     public static function get( $table, Connection $database) {
-        $databaseStructure = self::getDatabaseStructure($database);
         try {
-            return $databaseStructure->getColumns( $table );
+            if(class_exists('Nette\Database\Structure')) {
+                $databaseStructure = self::getDatabaseStructure($database);
+                return $databaseStructure->getColumns( $table );
+            }
+            $driver = self::getDatabaseStructureNette22($database);
+            return $driver->getColumns( $table );
         } catch (InvalidArgumentException $e) {
             throw new StructureException($e->getMessage());
         }
@@ -39,4 +43,8 @@ class Structure
         return self::$databaseStructure;
     }
 
+    protected static function getDatabaseStructureNette22(Connection $connection)
+    {
+        return $connection->getSupplementalDriver();
+    }
 }
