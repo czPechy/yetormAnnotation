@@ -98,7 +98,7 @@ class Control
     }
 
     protected function processConfig($path) {
-        if(class_exists('Nette\Utils\FileSystem')) {
+        if(method_exists('Nette\Utils\FileSystem', 'read')) {
             $neonContent = FileSystem::read($path);
         } else {
             $neonContent = (string) file_get_contents($path);
