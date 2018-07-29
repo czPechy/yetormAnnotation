@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
-class datebaseTest extends PHPUnit_Framework_TestCase
+class databaseTest extends PHPUnit_Framework_TestCase
 {
 
     public function prepareDatabase() {
@@ -12,8 +12,6 @@ class datebaseTest extends PHPUnit_Framework_TestCase
     {
         $database = $this->prepareDatabase();
         $database->connect();
-
-        $this->assertSame([], \czPechy\YetOrmAnnotation\Database\Structure::get('test', $database));
 
         $database->query('CREATE TABLE test (id INT(11) PRIMARY KEY)');
 
