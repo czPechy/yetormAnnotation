@@ -1,0 +1,26 @@
+{
+    "name": "czpechy/yetormannotation",
+    "description": "Annotation generator for YetORM entity",
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "homepage": "https://github.com/czPechy/yetormAnnotation",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Pecha",
+            "email": "martin@pecha.pro"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "czPechy\\YetOrmAnnotation\\": "src/"
+        },
+        "files": ["src/exceptions.php"]
+    },
+    "require-dev": {
+        "tracy/tracy": "v2.3.12",
+        "phpunit/phpunit": "~4.0"
+    }
+}
