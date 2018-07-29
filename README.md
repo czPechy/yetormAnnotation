@@ -16,6 +16,9 @@ For now exist only this simple CLI script with easy navigation
 $ vendor/bin/generator
 ```
 
+# Support
+Nette >= 2.2
+
 # Buy me a coffee <3
 [![Buy me a Coffee](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=E8NK53NGKVDHS)
 
