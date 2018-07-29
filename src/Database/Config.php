@@ -21,7 +21,9 @@ class Config
         }
         try {
             self::$connection = new Connection($settings['dsn'], $settings['user'], $settings['password'], (isset($settings['options']) ? $settings['options'] : []));
-            self::$connection->connect();
+            if(!self::$connection->query('SELECT 1')) {
+                throw new ConfigException('Cannot connect to database');
+            }
         } catch (\Exception $e) {
             throw new ConfigException($e->getMessage());
         }

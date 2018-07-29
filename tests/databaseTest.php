@@ -15,6 +15,12 @@ class databaseTest extends PHPUnit_Framework_TestCase
 
         $database->query('CREATE TABLE test (id INT(11) PRIMARY KEY)');
 
+        try {
+            \czPechy\YetOrmAnnotation\Database\Structure::get('NOT_EXISTING_TABLE', $database);
+        } catch (\czPechy\YetOrmAnnotation\StructureException $e) {
+            $this->throwException($e);
+        }
+
         $columns = \czPechy\YetOrmAnnotation\Database\Structure::get('test', $database); // NDB >2.3
         $this->assertCount(1, $columns);
 

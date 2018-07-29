@@ -44,4 +44,39 @@ class configTest extends PHPUnit_Framework_TestCase
         ], \czPechy\YetOrmAnnotation\Database\Config::getDatabaseSettings($configData));
     }
 
+    public function testUnsupportedNeon()
+    {
+        $configData = [];
+
+        try {
+            \czPechy\YetOrmAnnotation\Database\Config::connect($configData);
+        } catch (\czPechy\YetOrmAnnotation\ConfigException $e) {
+            $this->throwException($e);
+        }
+    }
+
+    public function testGetDatabase()
+    {
+        $this->assertNull(\czPechy\YetOrmAnnotation\Database\Config::getDatabase());
+    }
+
+    public function testBadCredentials()
+    {
+        $configData = [
+            'database' => [
+                'default' => [
+                    'dsn' => 'mysql:host=aaaaa;database=something',
+                    'user' => null,
+                    'password' => null
+                ]
+            ]
+        ];
+
+        try {
+            \czPechy\YetOrmAnnotation\Database\Config::connect($configData);
+        } catch (\czPechy\YetOrmAnnotation\ConfigException $e) {
+            $this->throwException($e);
+        }
+    }
+
 }

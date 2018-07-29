@@ -110,4 +110,20 @@ class columnTest extends PHPUnit_Framework_TestCase
         $this->assertSame(' * @property Nette\Utils\DateTime|null $test', \czPechy\YetOrmAnnotation\Database\Column::generateAnnotation($testData));
     }
 
+    public function testNotImplemented()
+    {
+        $testData = [
+            'nativetype' => 'NOTIMPLEMENTED',
+            'nullable' => true,
+            'autoincrement' => false,
+            'name' => 'test'
+        ];
+
+        try {
+            \czPechy\YetOrmAnnotation\Database\Column::generateAnnotation($testData);
+        } catch (\czPechy\YetOrmAnnotation\ColumnException $e) {
+            $this->throwException($e);
+        }
+    }
+
 }
