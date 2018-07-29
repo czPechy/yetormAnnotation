@@ -27,9 +27,17 @@ class Control
     public function run()
     {
         $this->writeLine('Welcome in YetORM Annotation generator!');
-        $configDir = $this->readLine('Please enter your config directory: ');
-        while(!is_dir($configDir)) {
-            $configDir = $this->readLine('Directory \'' . $configDir . '\' not exist, please specify existing dir: ');
+        $configDir = null;
+        if(is_dir('app/config/')) {
+            $this->boolQuestion('Default config dir found, did you want use \'app/config\'?', function() use (&$configDir){
+                $configDir = 'app/config/';
+            }, function(){ });
+        }
+        if ($configDir === null) {
+            $configDir = $this->readLine('Please enter your config directory: ');
+            while(!is_dir($configDir)) {
+                $configDir = $this->readLine('Directory \'' . $configDir . '\' not exist, please specify existing dir: ');
+            }
         }
 
         $configDir = rtrim($configDir, '/');
@@ -79,13 +87,9 @@ class Control
                 $this->processConfig([$configDir . 'config.local.neon', $configDir . 'config.neon']);
             }, $callbackDefaultNeon);
         } else if($existingConfigDefault) {
-            Callback::invokeSafe($callbackDefaultNeon, [], function(){
-                $this->writeLine('Error when invoking $callbackDefaultNeon');
-            });
+            $callbackDefaultNeon();
         } else {
-            Callback::invokeSafe($callbackOtherNeon, [], function(){
-                $this->writeLine('Error when invoking $callbackOtherNeon');
-            });
+            $callbackOtherNeon();
         }
 
         $this->newLine();
@@ -94,8 +98,17 @@ class Control
     }
 
     protected function processConfig($path) {
-        $neonContent = FileSystem::read($path);
-        $neon = Neon::decode($neonContent);
+        if(class_exists('Nette\Utils\FileSystem')) {
+            $neonContent = FileSystem::read($path);
+        } else {
+            $neonContent = (string) file_get_contents($path);
+        }
+        try {
+            $neon = Neon::decode($neonContent);
+        } catch (\Exception $e) {
+            $this->writeLine($e->getMessage());
+            exit(-1);
+        }
         try {
             Config::connect($neon);
         } catch (ConfigException $e) {
@@ -157,15 +170,9 @@ class Control
 
         $this->newLine();
         if(Strings::lower($read) === 'y') {
-            if(Callback::check($callbackTrue)) {
-                Callback::invokeSafe($callbackTrue, [], function(){
-                    $this->writeLine('Error when invoking $callbackTrue');
-                });
-            }
-        } else if(Callback::check($callbackFalse)) {
-            Callback::invokeSafe($callbackFalse, [], function(){
-                $this->writeLine('Error when invoking $callbackFalse');
-            });
+            $callbackTrue();
+        } else {
+            $callbackFalse();
         }
     }
 
