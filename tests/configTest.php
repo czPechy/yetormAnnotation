@@ -11,7 +11,7 @@ class configTest extends PHPUnit_Framework_TestCase
                 'default' => [
                     'dsn' => 'sqlite::memory:',
                     'user' => null,
-                    'pass' => null
+                    'password' => null
                 ]
             ]
         ];
@@ -19,7 +19,7 @@ class configTest extends PHPUnit_Framework_TestCase
         $this->assertSame([
             'dsn' => 'sqlite::memory:',
             'user' => null,
-            'pass' => null
+            'password' => null
         ], \czPechy\YetOrmAnnotation\Database\Config::getDatabaseSettings($configData));
     }
 
@@ -31,7 +31,7 @@ class configTest extends PHPUnit_Framework_TestCase
                     'default' => [
                         'dsn' => 'sqlite::memory:',
                         'user' => null,
-                        'pass' => null
+                        'password' => null
                     ]
                 ]
             ]
@@ -40,7 +40,7 @@ class configTest extends PHPUnit_Framework_TestCase
         $this->assertSame([
             'dsn' => 'sqlite::memory:',
             'user' => null,
-            'pass' => null
+            'password' => null
         ], \czPechy\YetOrmAnnotation\Database\Config::getDatabaseSettings($configData));
     }
 

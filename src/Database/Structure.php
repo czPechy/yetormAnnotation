@@ -15,12 +15,13 @@ class Structure
     /**
      * @param $table
      * @param Connection $database
+     * @param bool $force22
      * @return array
      * @throws StructureException
      */
-    public static function get( $table, Connection $database) {
+    public static function get( $table, Connection $database, $force22 = false) {
         try {
-            if(class_exists('Nette\Database\Structure')) {
+            if(!$force22 && class_exists('Nette\Database\Structure')) {
                 $databaseStructure = self::getDatabaseStructure($database);
                 return $databaseStructure->getColumns( $table );
             }
@@ -47,4 +48,5 @@ class Structure
     {
         return $connection->getSupplementalDriver();
     }
+
 }
