@@ -3,9 +3,9 @@
     "description": "Annotation generator for YetORM entity",
     "require": {
         "php": ">=5.6.0",
-        "nette/utils": "2.5.2",
-        "nette/neon": "v2.4.3",
-        "nette/database": "v2.4.6"
+        "nette/utils": ">=2.2",
+        "nette/neon": ">=2.2",
+        "nette/database": ">=2.2"
     },
     "homepage": "https://github.com/czPechy/yetormAnnotation",
     "license": "MIT",
