@@ -37,7 +37,7 @@ class Column
             return 'double';
         }
         if($nativeType === 'VARCHAR' || $nativeType === 'TEXT' || $nativeType === 'LONGTEXT' || $nativeType === 'SHORTTEXT'
-            || $nativeType === 'BLOB' || $nativeType === 'BINARY') {
+            || $nativeType === 'MEDIUMTEXT' || $nativeType === 'BLOB' || $nativeType === 'BINARY') {
             return 'string';
         }
         if($nativeType === 'BOOL' || $nativeType === 'BOOLEAN') {
