@@ -6,7 +6,14 @@
 
 ini_set('display_errors', 1);
 
-require __DIR__ . '/../vendor/autoload.php';
+// installed in project
+if(is_file(__DIR__ . '/../../../autoload.php')) {
+    require __DIR__ . '/../../../autoload.php';
+}
+// run in development
+if(is_file(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
+}
 require __DIR__ . '/Cli/Control.php';
 
 (new \czPechy\YetOrmAnnotation\Cli\Control())->run();
