@@ -2,7 +2,10 @@
     "name": "czpechy/yetormannotation",
     "description": "Annotation generator for YetORM entity",
     "require": {
-        "php": ">=5.6.0"
+        "php": ">=5.6.0",
+        "nette/utils": "2.5.2",
+        "nette/neon": "v2.4.3",
+        "nette/database": "v2.4.6"
     },
     "homepage": "https://github.com/czPechy/yetormAnnotation",
     "license": "MIT",
@@ -14,11 +17,10 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "psr-4": {
-            "czPechy\\YetOrmAnnotation\\": "src/"
-        },
+        "classmap": ["src/"],
         "files": ["src/exceptions.php"]
     },
+    "bin": ["src/generator"],
     "require-dev": {
         "tracy/tracy": "v2.3.12",
         "phpunit/phpunit": "~4.0"

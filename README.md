@@ -11,13 +11,9 @@ $ composer require czpechy/yetormannotation
 ```
 
 # How to use
-```php
-
-```
-
-# Result
-```json
-
+For now exist only this simple CLI script with easy navigation
+```sh
+$ vendor/bin/generator
 ```
 
 # Buy me a coffee <3
