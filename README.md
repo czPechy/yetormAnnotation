@@ -1,4 +1,4 @@
-[![GitHub version](https://badge.fury.io/gh/czPechy%2FyetormAnnotation.svg)](http://badge.fury.io/gh/czPechy%2FyetormAnnotation)
+[![GitHub version](https://badge.fury.io/gh/czPechy%2FyetormAnnotation.svg)](https://badge.fury.io/gh/czPechy%2FyetormAnnotation)
 [![travis-ci.com](https://travis-ci.com/czPechy/yetormAnnotation.svg?branch=master)](https://travis-ci.com/czPechy/yetormAnnotation)
 [![codecov.io](https://codecov.io/github/czPechy/yetormAnnotation/coverage.svg?branch=master)](https://codecov.io/github/czPechy/yetormAnnotation?branch=master)
 
