@@ -24,8 +24,6 @@ class databaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($annotation, ' * @property int|null $id');
 
         $database->query('DROP TABLE test;');
-
-        $this->assertSame([], \czPechy\YetOrmAnnotation\Database\Structure::get('test', $database));
     }
 
 }
