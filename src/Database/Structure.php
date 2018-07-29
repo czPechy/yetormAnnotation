@@ -26,7 +26,7 @@ class Structure
             }
             $driver = self::getDatabaseStructureNette22($database);
             return $driver->getColumns( $table );
-        } catch (InvalidArgumentException $e) {
+        } catch (\Exception $e) {
             throw new StructureException($e->getMessage());
         }
     }
