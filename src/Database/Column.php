@@ -44,7 +44,7 @@ class Column
             return 'bool';
         }
         if($nativeType === 'DATE' || $nativeType === 'DATETIME') {
-            return DateTime::class;
+            return '\\' . DateTime::class;
         }
         throw new ColumnException('This type of column is not implemented yet, please create MR');
     }

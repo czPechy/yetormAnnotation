@@ -104,10 +104,10 @@ class columnTest extends PHPUnit_Framework_TestCase
             'name' => 'test'
         ];
 
-        $this->assertSame(' * @property Nette\Utils\DateTime|null $test', \czPechy\YetOrmAnnotation\Database\Column::generateAnnotation($testData));
+        $this->assertSame(' * @property \Nette\Utils\DateTime|null $test', \czPechy\YetOrmAnnotation\Database\Column::generateAnnotation($testData));
 
         $testData['nativetype'] = 'DATE';
-        $this->assertSame(' * @property Nette\Utils\DateTime|null $test', \czPechy\YetOrmAnnotation\Database\Column::generateAnnotation($testData));
+        $this->assertSame(' * @property \Nette\Utils\DateTime|null $test', \czPechy\YetOrmAnnotation\Database\Column::generateAnnotation($testData));
     }
 
     public function testNotImplemented()
