@@ -11,6 +11,7 @@ use Nette\Neon\Neon;
 use Nette\Utils\Callback;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Strings;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 class Control
 {
@@ -27,70 +28,115 @@ class Control
     public function run()
     {
         $this->writeLine('Welcome in YetORM Annotation generator!');
-        $configDir = null;
-        if(is_dir('app/config/')) {
-            $this->boolQuestion('Default config dir found, did you want use \'app/config\'?', function() use (&$configDir){
-                $configDir = 'app/config/';
-            }, function(){ });
-        }
-        if ($configDir === null) {
-            $configDir = $this->readLine('Please enter your config directory: ');
-            while(!is_dir($configDir)) {
-                $configDir = $this->readLine('Directory \'' . $configDir . '\' not exist, please specify existing dir: ');
-            }
-        }
 
-        $configDir = rtrim($configDir, '/');
-        if(!empty($configDir)) {
-            $configDir .=  $this->dirSeparator;
-        }
+		$type = $this->readLine('Use nette configs or manual connection (n/m): ');
+		while(!in_array($type, ['m', 'n'], true)) {
+			$type = $this->readLine('Use nette configs or manual connection (n/m): ');
+		}
 
-        $originalDirectory = array_diff( scandir( $configDir, SCANDIR_SORT_NONE ), [ '..', '.' ] );
-        $originalDirectory = array_filter($originalDirectory, function($file) use ($configDir) {
-            if(is_file($configDir . $file)) {
-                return $file;
-            }
-            return null;
-        });
-        $itemsLimit = 4;
-        $itemsCnt = 0;
-        $directory = array_filter($originalDirectory, function($file) use (&$itemsCnt, $itemsLimit) {
-            if($itemsCnt <= $itemsLimit) {
-                $itemsCnt++;
-                return $file;
-            }
-            return null;
-        });
-        if($itemsCnt > $itemsLimit) {
-            $directory[] = '...';
-        }
-        $this->writeLine('In directory found ' . \count($originalDirectory) . ' files. (' . implode(', ', $directory) . ')' );
+        if($type === 'n') {
+			$configDir = NULL;
+			if (is_dir('app/config/')) {
+				$this->boolQuestion('Default config dir found, did you want use \'app/config\'?', function () use (&$configDir) {
+					$configDir = 'app/config/';
+				}, function () {
+				});
+			}
+			if ($configDir === NULL) {
+				$configDir = $this->readLine('Please enter your config directory: ');
+				while (!is_dir($configDir)) {
+					$configDir = $this->readLine('Directory \'' . $configDir . '\' not exist, please specify existing dir: ');
+				}
+			}
 
-        $existingConfigDefault = file_exists($configDir . 'config.neon');
-        $existingConfigLocal = file_exists($configDir . 'config.local.neon');
+			$configDir = rtrim($configDir, '/');
+			if (!empty($configDir)) {
+				$configDir .= $this->dirSeparator;
+			}
 
-        $callbackOtherNeon = function() use ($configDir) {
-            $read = $this->readLine('Please specify your neon cofig in dir \'' . $configDir . '\': ');
-            while (!file_exists($configDir . $read)) {
-                $read = $this->readLine('Config not found ('. $configDir . $read .'), please specify existing config in \'' . $configDir . '\': ');
-            }
-            $this->processConfig($configDir . $read);
-        };
-        $callbackDefaultNeon = function() use ($callbackOtherNeon, $configDir) {
-            $this->boolQuestion('Do you want use default config.neon?', function() use ($configDir){
-                $this->processConfig($configDir . 'config.neon');
-            }, $callbackOtherNeon);
-        };
+			$originalDirectory = array_diff(scandir($configDir, SCANDIR_SORT_NONE), ['..', '.']);
+			$originalDirectory = array_filter($originalDirectory, function ($file) use ($configDir) {
+				if (is_file($configDir . $file)) {
+					return $file;
+				}
+				return NULL;
+			});
+			$itemsLimit = 4;
+			$itemsCnt = 0;
+			$directory = array_filter($originalDirectory, function ($file) use (&$itemsCnt, $itemsLimit) {
+				if ($itemsCnt <= $itemsLimit) {
+					$itemsCnt++;
+					return $file;
+				}
+				return NULL;
+			});
+			if ($itemsCnt > $itemsLimit) {
+				$directory[] = '...';
+			}
+			$this->writeLine('In directory found ' . \count($originalDirectory) . ' files. (' . implode(', ', $directory) . ')');
 
-        if($existingConfigDefault && $existingConfigLocal) {
-            $this->boolQuestion('Do you want use default config.local.neon and config.neon?', function() use ($configDir) {
-                $this->processConfig([$configDir . 'config.local.neon', $configDir . 'config.neon']);
-            }, $callbackDefaultNeon);
-        } else if($existingConfigDefault) {
-            $callbackDefaultNeon();
-        } else {
-            $callbackOtherNeon();
-        }
+			$existingConfigDefault = file_exists($configDir . 'config.neon');
+			$existingConfigLocal = file_exists($configDir . 'config.local.neon');
+
+			$callbackOtherNeon = function () use ($configDir) {
+				$read = $this->readLine('Please specify your neon cofig in dir \'' . $configDir . '\': ');
+				while (!file_exists($configDir . $read)) {
+					$read = $this->readLine('Config not found (' . $configDir . $read . '), please specify existing config in \'' . $configDir . '\': ');
+				}
+				$this->processConfig($configDir . $read);
+			};
+			$callbackDefaultNeon = function () use ($callbackOtherNeon, $configDir) {
+				$this->boolQuestion('Do you want use default config.neon?', function () use ($configDir) {
+					$this->processConfig($configDir . 'config.neon');
+				}, $callbackOtherNeon);
+			};
+
+			if ($existingConfigDefault && $existingConfigLocal) {
+				$this->boolQuestion('Do you want use default config.local.neon and config.neon?', function () use ($configDir) {
+					$this->processConfig([$configDir . 'config.local.neon', $configDir . 'config.neon']);
+				}, $callbackDefaultNeon);
+			} else if ($existingConfigDefault) {
+				$callbackDefaultNeon();
+			} else {
+				$callbackOtherNeon();
+			}
+		} else {
+
+        	$setingsCallback = function(){
+				$driver = $this->readLine('Use MySQL or PostgreSQL (m/p): ');
+				while(!in_array($driver, ['m', 'p'], true)) {
+					$driver = $this->readLine('Use MySQL or PostgreSQL (m/p): ');
+				}
+				$driver = $driver === 'm' ? 'mysql' : 'pgsql';
+
+				$server = $this->readLine('HOST: ');
+				$user = $this->readLine('USER: ');
+				$password = $this->readLine('PASS: ');
+				$db = $this->readLine('DB: ');
+
+				return [
+					'database' => [
+						'default' => [
+							'dsn' => $driver . ':host=' . $server . ';dbname=' . $db,
+							'user' => $user,
+							'password' => $password
+						]
+					]
+				];
+			};
+
+        	$connected = false;
+        	while(!$connected) {
+				try {
+					$config = $setingsCallback();
+					Config::connect($config);
+					$connected = true;
+					$this->processTable();
+				} catch (ConfigException $e) {
+					$this->writeLine($e->getMessage());
+				}
+			}
+		}
 
         $this->newLine();
         $this->writeLine('Thanks for using!');
