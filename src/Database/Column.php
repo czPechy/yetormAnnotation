@@ -30,8 +30,8 @@ class Column
      */
     public static function getType( $nativeType) {
         if($nativeType === 'INT' || $nativeType === 'TINYINT' || $nativeType === 'BIGINT' || $nativeType === 'SMALLINT'
-            || $nativeType === 'INTEGER' || $nativeType === 'MEDIUMINT' || $nativeType === 'TIMESTAMP'
-			|| $nativeType === 'INT4' || $nativeType === 'INT8' || $nativeType === 'INT2') {
+            || $nativeType === 'INTEGER' || $nativeType === 'MEDIUMINT'	|| $nativeType === 'INT4' || $nativeType === 'INT8'
+			|| $nativeType === 'INT2' || ($nativeType === 'TIMESTAMP' && Config::isMySQL())) {
             return 'int';
         }
         if($nativeType === 'FLOAT' || $nativeType === 'DECIMAL' || $nativeType === 'DEC' || $nativeType === 'DOUBLE'
@@ -45,7 +45,7 @@ class Column
         if($nativeType === 'BOOL' || $nativeType === 'BOOLEAN') {
             return 'bool';
         }
-        if($nativeType === 'DATE' || $nativeType === 'DATETIME') {
+        if($nativeType === 'DATE' || $nativeType === 'DATETIME' || ($nativeType === 'TIMESTAMP' && Config::isPostgreSQL())) {
             return '\\' . DateTime::class;
         }
         throw new ColumnException('This type of column (' . $nativeType . ') is not implemented yet, please create MR');

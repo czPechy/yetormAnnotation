@@ -8,6 +8,10 @@ use Nette\Database\ConnectionException;
 class Config
 {
 
+	const PGSQL = 'pgsql';
+	const MYSQL = 'mysql';
+
+	protected static $type;
     protected static $connection;
 
     /**
@@ -24,6 +28,7 @@ class Config
             if(!self::$connection->query('SELECT 1')) {
                 throw new ConfigException('Cannot connect to database');
             }
+            self::$type = \strpos($settings['dsn'], self::PGSQL) === 0 ? self::PGSQL : self::MYSQL;
         } catch (\Exception $e) {
             throw new ConfigException($e->getMessage());
         }
@@ -42,5 +47,17 @@ class Config
         }
         return $databaseConfig;
     }
+
+    public static function getDbType() {
+    	return self::$type;
+	}
+
+	public static function isPostgreSQL() {
+    	return self::getDbType() === self::PGSQL;
+	}
+
+	public static function isMySQL() {
+    	return self::getDbType() === self::MYSQL;
+	}
 
 }
