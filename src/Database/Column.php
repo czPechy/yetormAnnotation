@@ -30,14 +30,16 @@ class Column
      */
     public static function getType( $nativeType) {
         if($nativeType === 'INT' || $nativeType === 'TINYINT' || $nativeType === 'BIGINT' || $nativeType === 'SMALLINT'
-            || $nativeType === 'INTEGER' || $nativeType === 'MEDIUMINT' || $nativeType === 'TIMESTAMP') {
+            || $nativeType === 'INTEGER' || $nativeType === 'MEDIUMINT' || $nativeType === 'TIMESTAMP'
+			|| $nativeType === 'INT4' || $nativeType === 'INT8' || $nativeType === 'INT2') {
             return 'int';
         }
-        if($nativeType === 'FLOAT' || $nativeType === 'DECIMAL' || $nativeType === 'DEC' || $nativeType === 'DOUBLE') {
+        if($nativeType === 'FLOAT' || $nativeType === 'DECIMAL' || $nativeType === 'DEC' || $nativeType === 'DOUBLE'
+			|| $nativeType === 'NUMERIC' || $nativeType === 'FLOAT4' || $nativeType === 'FLOAT8') {
             return 'double';
         }
         if($nativeType === 'VARCHAR' || $nativeType === 'TEXT' || $nativeType === 'LONGTEXT' || $nativeType === 'SHORTTEXT'
-            || $nativeType === 'MEDIUMTEXT' || $nativeType === 'BLOB' || $nativeType === 'BINARY') {
+            || $nativeType === 'MEDIUMTEXT' || $nativeType === 'BLOB' || $nativeType === 'BINARY' || $nativeType === 'CHAR') {
             return 'string';
         }
         if($nativeType === 'BOOL' || $nativeType === 'BOOLEAN') {
@@ -46,7 +48,7 @@ class Column
         if($nativeType === 'DATE' || $nativeType === 'DATETIME') {
             return '\\' . DateTime::class;
         }
-        throw new ColumnException('This type of column is not implemented yet, please create MR');
+        throw new ColumnException('This type of column (' . $nativeType . ') is not implemented yet, please create MR');
     }
 
 }
